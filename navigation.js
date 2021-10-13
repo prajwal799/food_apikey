@@ -1,4 +1,4 @@
-function Navbar(){
+export function Navbar(){
     return `<div id="nav">
     <ul>
     <li><a href="food1.html">recipes</a></li>
@@ -9,42 +9,40 @@ function Navbar(){
 }
 
  
- export function fetchdata(){
-    return `<div id="recipes>
-    const input = document.getElementById('search').value;
-const btn = document.getElementById('btn');
 
-btn.addEventListener("click",search);
-search();
 
-async function search(){
-  const input = document.getElementById('search').value;
-   const data = await fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=pizza")
+export async function getdata(url){
+   const data = await fetch(url)
 
    const list = await data.json();
 
-   const meal = await list.meals;
-   const recipes = document.getElementById("recipes");
-   recipes.textContent = "";
-   for(let userData of meal){
-    const div = document.createElement("div");
-    const h1 = document.createElement("h1");
-    h1.textContent = userData.strMeal;
+   return list.meals;
 
-    const img = document.createElement('img');
-    img.src = userData.strMealThumb;
-    img.style.width = "200px";
-    img.style.height = "200px";
-
-    div.append(h1,img);
-    recipes.append(div);
- }    
-   
-   
 }
-             </div>`
+  
+ export function fetchdata(d,data) {
+    d.forEach(({strMealThumb,strMeal,strCategory,strInstructions}) => {
+        let div = document.createElement('div')
+        div.classList.add("anotherclass")
+         data.innerText = null;
+         let img = document.createElement('img');
+         img.src = strMealThumb;
+         img.style.width = "200px";
+         img.style.height = "200px";
+        let p = document.createElement('p');
+        p.innerText = strMeal;
+        let p1 = document.createElement('p');
+        p1.innerText = `Category: ${strCategory}`;
+        let p2 = document.createElement('p');
+        p2.innerText = `Instructions: ${strInstructions}`;
+        
+         div.append(img,p,p1,p2);
+         data.append(div);
+    });
 }
+   
+  
 
 
 
-export default Navbar;
+export default {Navbar,getdata,fetchdata};

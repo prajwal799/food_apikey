@@ -11,12 +11,69 @@
     <div id="nav">   
     </div> <br/><br/><br/>
    <div id="div_randoms"></div>
-    <input type="text" id="search" placeholder="search dish"/>
+    <input  id="search" placeholder="search dish" onkeyup="setdata()" type="text"/>
     <button id="btn">Search</button>
+     <div id="search_box">
 
+     </div>
    <div  id="recipes">
 
    </div>
     <script type="module" src="food1.js"></script>
+    <script>
+        // debouncing and throttler
+
+    let i =0;
+    const getsearchData = () => {
+        div(i++);
+    }
+
+ const searchdata = function(fn,delay){
+       let timer ;
+       return function (){
+           let context = this,
+           args = arguments;
+           clearTimeout(timer);
+           timer = setTimeout( () => {
+               getsearchData.apply(context , arguments)
+           },delay);
+       }
+}
+
+
+async function div(i){
+    const search_text = document.getElementById("search_box");
+        const search_input = document.getElementById('search').value;
+           
+       try{
+        let res =await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${search_input}`)
+        let data = await res.json();
+        let item = await data.meals;
+
+         search_box.innerHTML=null;
+         let i =0;
+         for(let userData of item){
+             i++;
+                const cell = document.createElement('div');
+              cell.textContent = userData.strMeal;
+              search_box.append(cell);
+              
+         }
+         if( i == 0){
+            const cell = document.createElement('div');
+              cell.textContent = 'No Data is found';
+              search_box.append(cell);
+         }
+       }
+         
+       catch(e){
+              console.log('what is errror')
+       }
+}
+
+
+var setdata = searchdata(getsearchData,1000);
+
+    </script>
 </body>
 </html>

@@ -37,3 +37,11 @@ body{
     width: 250px;
     margin: auto;
 }
+#div_random{
+    width: 200px;
+    height: 300px;
+    background-color: aqua;
+}
+#search_box{
+    margin-left:100px;
+}
